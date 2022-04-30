@@ -9,6 +9,6 @@ class Platform(sprite.Sprite):
     def __init__(self, x, y):
         sprite.Sprite.__init__(self)
         self.image = Surface((PWIDTH, PHEIGHT))
-        self.image.fill(Color(PCOLOR))
+        self.image = image.load("blocks/block1.png")
         self.rect = Rect(x, y, PWIDTH, PHEIGHT)
 

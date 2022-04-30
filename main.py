@@ -66,7 +66,7 @@ def main():
         x = 0
 
     while 1:
-        timer.tick(60)
+        timer.tick(50)
         for e in pygame.event.get():
             if e.type == KEYDOWN and e.key == K_LEFT:
                 left = True
