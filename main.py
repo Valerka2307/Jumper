@@ -1,8 +1,8 @@
 import pygame
 from pygame import *
-from character import Player
-from blocks import Platform
-
+from character import *
+from blocks import *
+from camera import *
 
 WIDTH = 800
 HEIGHT = 640
@@ -15,12 +15,23 @@ PCOLOR = "dark orange"
 
 timer = pygame.time.Clock()
 
+def camera_configure(camera, target_rect):
+    l, t, _, _ = target_rect
+    _, _, w, h = camera
+    l, t = -l + WIDTH / 2, -t + HEIGHT / 2
+
+    l = min(0, l) # Не движемся дальше левой границы
+    l = max(-(camera.width-WIDTH), l) # Не движемся дальше правой границы
+    t = max(-(camera.height-HEIGHT), t) # Не движемся дальше нижней границы
+    t = min(0, t) # Не движемся дальше верхней границы
+
+    return Rect(l, t, w, h)
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode(DISPLAY)
     pygame.display.set_caption("Platform")
-    bg = Surface((WIDTH,HEIGHT))
-    bg.fill(Color(BACKGROUND_COLOR))
+    bg = pygame.image.load("background/moun.jpg")
     
     hero = Player(55,55) # создаем героя по (x,y) координатам
     left = right = False    # по умолчанию — стоим
@@ -30,27 +41,35 @@ def main():
     entities.add(hero)
 
     level = [
-       "-------------------------",
-       "-                       -",
-       "-                       -",
-       "-                       -",
-       "-            --         -",
-       "-                       -",
-       "--                      -",
-       "-                       -",
-       "-                   --- -",
-       "-                       -",
-       "-                       -",
-       "-      ---              -",
-       "-                       -",
-       "-   -----------         -",
-       "-                       -",
-       "-                -      -",
-       "-                   --  -",
-       "-                       -",
-       "-                       -",
-       "-------------------------"]
-
+       "-----------------------------------------------",
+       "-                                             -",
+       "-                       --                    -",
+       "-                                             -",
+       "-            --                 -----         -",
+       "-                                             -",
+       "--                                            -",
+       "-                                             -",
+       "-                   ----     ---              -",
+       "-                                             -",
+       "-                                             -",
+       "--                                    ----    -",
+       "-                                             -",
+       "-                                             -",
+       "-                                             -", 
+       "-                            ---              -",
+       "-                                             -",
+       "-                                             -",
+       "-      ---                       --- --       -",
+       "-                                             -",
+       "-                                             -",
+       "-   -------         ----                      -",
+       "-                                             -",
+       "-                         -                   -",
+       "-                                             -",
+       "-                            --               -",
+       "-                                             -",
+       "-                                             -",
+       "-----------------------------------------------"]
     up = False
     
     x=y=0
@@ -64,9 +83,13 @@ def main():
             x += PWIDTH
         y += PHEIGHT
         x = 0
+    
+    total_level_width  = len(level[0])*PWIDTH # Высчитываем фактическую ширину уровня
+    total_level_height = len(level)*PHEIGHT   # высоту
 
+    camera = Camera(camera_configure, total_level_width, total_level_height)
     while 1:
-        timer.tick(50)
+        timer.tick(60)
         for e in pygame.event.get():
             if e.type == KEYDOWN and e.key == K_LEFT:
                 left = True
@@ -89,7 +112,11 @@ def main():
         screen.blit(bg, (0,0))
 
         hero.update(left, right, up, platforms) # передвижение
-        entities.draw(screen) # отображение всего
+
+        camera.update(hero) # центризируем камеру относительно персонажа
+
+        for e in entities:
+            screen.blit(e.image, camera.apply(e))
 
         pygame.display.update()        
 

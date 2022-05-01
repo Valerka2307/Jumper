@@ -1,7 +1,7 @@
 from pygame import *
 import pyganim
 
-JUMP_POWER = 10
+JUMP_POWER = 12
 GRAVITY = 0.4 # Сила, которая будет тянуть нас вниз
 MOVE_SPEED = 9
 WIDTH = 32
