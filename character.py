@@ -1,14 +1,18 @@
 from pygame import *
 import pyganim
+from shooting import *
 
 JUMP_POWER = 12
 GRAVITY = 0.4 # Сила, которая будет тянуть нас вниз
 MOVE_SPEED = 9
 WIDTH = 32
 HEIGHT = 32
-COLOR =  "red"
+COLOR = "red"
 
-ANIMATION_DELAY = 120 # скорость смены кадров
+all_sprites = pygame.sprite.Group()
+bullets = pygame.sprite.Group()
+
+ANIMATION_DELAY = 60 # скорость смены кадров
 ANIMATION_RIGHT = [('character/r0.png'),
             ('character/r1.png'),
             ('character/r2.png')]
@@ -50,7 +54,7 @@ class Player(sprite.Sprite):
         self.boltAnimStay.play()
         self.boltAnimStay.blit(self.image, (0, 0)) # По-умолчанию, стоим
         
-        self.boltAnimJumpLeft= pyganim.PygAnimation(ANIMATION_JUMP_LEFT)
+        self.boltAnimJumpLeft = pyganim.PygAnimation(ANIMATION_JUMP_LEFT)
         self.boltAnimJumpLeft.play()
         
         self.boltAnimJumpRight= pyganim.PygAnimation(ANIMATION_JUMP_RIGHT)
@@ -136,3 +140,9 @@ class Player(sprite.Sprite):
                 if yvel < 0:
                     self.rect.top = self.rect.bottom
                     self.yvel = 0
+
+    def shoot(self, facing):
+        self.facing = facing
+        bullet = Bullet(self.rect.centerx, self.rect.centery, self.facing)
+        all_sprites.add(bullet)
+        bullets.add(bullet)
