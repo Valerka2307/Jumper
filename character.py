@@ -24,14 +24,21 @@ ANIMATION_JUMP_LEFT = [('character/jl.png', 1)]
 ANIMATION_JUMP_RIGHT = [('character/jr.png', 1)]
 ANIMATION_JUMP = [('character/j.png', 1)]
 ANIMATION_STAY = [('character/s.png', 1)]
-
+ANIMATION_SHOOT_LEFT = [('character/sl0.png'),
+                       ('character/sl1.png'),
+                       ('character/sl2.png'),
+                       ('character/sl3.png')]
+ANIMATION_SHOOT_RIGHT = [('character/sr0.png'),
+                        ('character/sr1.png'),
+                        ('character/sr2.png'),
+                        ('character/sr3.png' )]
 class Player(sprite.Sprite):
     def __init__(self, x, y):
         sprite.Sprite.__init__(self)
         self.xvel = 0   #скорость перемещения. 0 - стоять на месте
         self.startX = x # Начальная позиция Х, пригодится когда будем переигрывать уровень
         self.startY = y
-        self.image = Surface((WIDTH,HEIGHT))
+        self.image = Surface((WIDTH, HEIGHT))
         self.image.fill(Color(COLOR))
         self.rect = Rect(x, y, WIDTH, HEIGHT) # прямоугольный объект
         self.yvel = 0 # скорость вертикального перемещения
@@ -57,15 +64,23 @@ class Player(sprite.Sprite):
         self.boltAnimJumpLeft = pyganim.PygAnimation(ANIMATION_JUMP_LEFT)
         self.boltAnimJumpLeft.play()
         
-        self.boltAnimJumpRight= pyganim.PygAnimation(ANIMATION_JUMP_RIGHT)
+        self.boltAnimJumpRight = pyganim.PygAnimation(ANIMATION_JUMP_RIGHT)
         self.boltAnimJumpRight.play()
         
-        self.boltAnimJump= pyganim.PygAnimation(ANIMATION_JUMP)
+        self.boltAnimJump = pyganim.PygAnimation(ANIMATION_JUMP)
         self.boltAnimJump.play()
-        
+
         boltAnim = []
-        for anim in ANIMATION_RIGHT:
+        for anim in ANIMATION_SHOOT_LEFT:
             boltAnim.append((anim, ANIMATION_DELAY))
+        self.boltAnimSL = pyganim.PygAnimation(boltAnim)
+        self.boltAnimSL.play()
+
+        boltAnim = []
+        for anim in ANIMATION_SHOOT_RIGHT:
+            boltAnim.append((anim, ANIMATION_DELAY))
+        self.boltAnimSR = pyganim.PygAnimation(boltAnim)
+        self.boltAnimSR.play()
 
     def update(self, left, right, up, platforms):
 

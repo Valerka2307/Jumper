@@ -27,6 +27,7 @@ def camera_configure(camera, target_rect):
 
     return Rect(l, t, w, h)
 
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode(DISPLAY)
@@ -72,7 +73,7 @@ def main():
        "-----------------------------------------------"]
     up = False
     
-    x=y=0
+    x = y = 0
     for row in level:
         for col in row:
             if col == "-":
@@ -113,7 +114,7 @@ def main():
             if e.type == KEYUP and e.key == K_UP:
                 up = False
 
-            if e.type == KEYUP and e.key == K_f:
+            if e.type == KEYUP and e.key == K_SPACE:
                 if lastMove == "right":
                     hero.shoot(1)
                 else:
@@ -127,11 +128,13 @@ def main():
         hero.update(left, right, up, platforms) # передвижение
 
         camera.update(hero) # центризируем камеру относительно персонажа
-        
         for e in entities:
             screen.blit(e.image, camera.apply(e))
-        all_sprites.draw(screen)
-        pygame.display.update()        
+
+        for e in all_sprites:
+            e.update()
+            screen.blit(e.image, camera.apply(e))
+        pygame.display.update()
 
 if __name__ == "__main__":
     main()
