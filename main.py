@@ -117,8 +117,10 @@ def main():
             if e.type == KEYUP and e.key == K_SPACE:
                 if lastMove == "right":
                     hero.shoot(1)
+                    #anim_shoot()
                 else:
                     hero.shoot(-1)
+                    #anim_shoot()
 
             if e.type == QUIT:
                 exit()

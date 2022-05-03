@@ -23,7 +23,12 @@ ANIMATION_LEFT = [('character/l0.png'),
 ANIMATION_JUMP_LEFT = [('character/jl.png', 1)]
 ANIMATION_JUMP_RIGHT = [('character/jr.png', 1)]
 ANIMATION_JUMP = [('character/j.png', 1)]
-ANIMATION_STAY = [('character/s.png', 1)]
+ANIMATION_STAY = [('character/s0.png'),
+            ('character/s1.png'),
+            ('character/s2.png'),
+            ('character/s3.png'),
+            ('character/s4.png'),
+            ('character/s5.png')]
 ANIMATION_SHOOT_LEFT = [('character/sl0.png'),
                        ('character/sl1.png'),
                        ('character/sl2.png'),
@@ -32,6 +37,8 @@ ANIMATION_SHOOT_RIGHT = [('character/sr0.png'),
                         ('character/sr1.png'),
                         ('character/sr2.png'),
                         ('character/sr3.png' )]
+
+
 class Player(sprite.Sprite):
     def __init__(self, x, y):
         sprite.Sprite.__init__(self)
@@ -56,8 +63,11 @@ class Player(sprite.Sprite):
             boltAnim.append((anim, ANIMATION_DELAY))
         self.boltAnimLeft = pyganim.PygAnimation(boltAnim)
         self.boltAnimLeft.play()
-        
-        self.boltAnimStay = pyganim.PygAnimation(ANIMATION_STAY)
+
+        boltAnim = []
+        for anim in ANIMATION_STAY:
+            boltAnim.append((anim, ANIMATION_DELAY))
+        self.boltAnimStay = pyganim.PygAnimation(boltAnim)
         self.boltAnimStay.play()
         self.boltAnimStay.blit(self.image, (0, 0)) # По-умолчанию, стоим
         
@@ -125,9 +135,9 @@ class Player(sprite.Sprite):
                 self.image.fill(Color(COLOR))
                 self.boltAnimStay.blit(self.image, (0, 0))
 
-
         if not self.onGround:
-            self.yvel +=  GRAVITY
+
+            self.yvel += GRAVITY
 
         self.onGround = False; # Мы не знаем, когда мы на земле
         
@@ -136,7 +146,6 @@ class Player(sprite.Sprite):
 
         self.rect.x += self.xvel # переносим свои положение на xvel
         self.collide(self.xvel, 0, platforms)
-
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
@@ -161,3 +170,10 @@ class Player(sprite.Sprite):
         bullet = Bullet(self.rect.centerx, self.rect.centery, self.facing)
         all_sprites.add(bullet)
         bullets.add(bullet)
+
+
+def anim_shoot():
+    if Player.shoot(1):
+        self.boltAnimSR.blit(self.image, (0, 0))
+    else:
+        self.boltAnimSL.blit(self.image, (0, 0))
