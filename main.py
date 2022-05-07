@@ -8,7 +8,7 @@ from shooting import *
 WIDTH = 900
 HEIGHT = 640
 DISPLAY = (WIDTH, HEIGHT)
-BACKGROUND_COLOR = "purple"
+BACKGROUND_COLOR = "yellow"
 PWIDTH = 32
 PHEIGHT = 32
 PCOLOR = "dark orange"
