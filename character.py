@@ -1,10 +1,12 @@
 from pygame import *
 import pyganim
 from shooting import *
+import time
 
-JUMP_POWER = 12
+
+JUMP_POWER = 10
 GRAVITY = 0.4 # Сила, которая будет тянуть нас вниз
-MOVE_SPEED = 9
+MOVE_SPEED = 12
 WIDTH = 32
 HEIGHT = 32
 COLOR = "red"
@@ -12,7 +14,7 @@ COLOR = "red"
 all_sprites = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 
-ANIMATION_DELAY = 60 # скорость смены кадров
+ANIMATION_DELAY = 100 # скорость смены кадров
 ANIMATION_RIGHT = [('character/r0.png'),
             ('character/r1.png'),
             ('character/r2.png')]
@@ -29,14 +31,6 @@ ANIMATION_STAY = [('character/s0.png'),
             ('character/s3.png'),
             ('character/s4.png'),
             ('character/s5.png')]
-ANIMATION_SHOOT_LEFT = [('character/sl0.png'),
-                       ('character/sl1.png'),
-                       ('character/sl2.png'),
-                       ('character/sl3.png')]
-ANIMATION_SHOOT_RIGHT = [('character/sr0.png'),
-                        ('character/sr1.png'),
-                        ('character/sr2.png'),
-                        ('character/sr3.png' )]
 
 
 class Player(sprite.Sprite):
@@ -50,6 +44,8 @@ class Player(sprite.Sprite):
         self.rect = Rect(x, y, WIDTH, HEIGHT) # прямоугольный объект
         self.yvel = 0 # скорость вертикального перемещения
         self.onGround = False # На земле ли я?
+        self.counter = 0
+        self.lastJump = time.time()
         self.image.set_colorkey(Color(COLOR)) # делаем фон прозрачным
         #        Анимация движения вправо
         boltAnim = []
@@ -80,36 +76,14 @@ class Player(sprite.Sprite):
         self.boltAnimJump = pyganim.PygAnimation(ANIMATION_JUMP)
         self.boltAnimJump.play()
 
-        boltAnim = []
-        for anim in ANIMATION_SHOOT_LEFT:
-            boltAnim.append((anim, ANIMATION_DELAY))
-        self.boltAnimSL = pyganim.PygAnimation(boltAnim)
-        self.boltAnimSL.play()
-
-        boltAnim = []
-        for anim in ANIMATION_SHOOT_RIGHT:
-            boltAnim.append((anim, ANIMATION_DELAY))
-        self.boltAnimSR = pyganim.PygAnimation(boltAnim)
-        self.boltAnimSR.play()
-
     def update(self, left, right, up, platforms):
-
         if up:
-            if self.onGround: # прыгаем, только когда можем оттолкнуться от земли
+            # прыгаем, только когда можем оттолкнуться от земли
+            if self.counter < 2 and time.time() - self.lastJump > 0.3:
+                print(self.counter)
                 self.yvel = -JUMP_POWER
-
-        if left:
-            self.xvel = -MOVE_SPEED # Лево = x- n
-
-        if right:
-            self.xvel = MOVE_SPEED # Право = x + n
-
-        if not(left or right): # стоим, когда нет указаний идти
-            self.xvel = 0
-        
-        if up:
-            if self.onGround: # прыгаем, только когда можем оттолкнуться от земли
-                self.yvel = -JUMP_POWER
+                self.counter += 1
+                self.lastJump = time.time()
             self.image.fill(Color(COLOR))
             self.boltAnimJump.blit(self.image, (0, 0))
 
@@ -135,12 +109,16 @@ class Player(sprite.Sprite):
                 self.image.fill(Color(COLOR))
                 self.boltAnimStay.blit(self.image, (0, 0))
 
+        if self.onGround:
+            self.counter = 0
+
         if not self.onGround:
 
             self.yvel += GRAVITY
 
-        self.onGround = False; # Мы не знаем, когда мы на земле
-        
+        self.onGround = False # Мы не знаем, когда мы на земле
+
+
         self.rect.y += self.yvel
         self.collide(0, self.yvel, platforms)
 
@@ -159,6 +137,7 @@ class Player(sprite.Sprite):
                 if yvel > 0:
                     self.rect.bottom = p.rect.top
                     self.onGround = True
+                    self.counter = 0
                     self.yvel = 0
 
                 if yvel < 0:
@@ -170,10 +149,3 @@ class Player(sprite.Sprite):
         bullet = Bullet(self.rect.centerx, self.rect.centery, self.facing)
         all_sprites.add(bullet)
         bullets.add(bullet)
-
-
-def anim_shoot():
-    if Player.shoot(1):
-        self.boltAnimSR.blit(self.image, (0, 0))
-    else:
-        self.boltAnimSL.blit(self.image, (0, 0))

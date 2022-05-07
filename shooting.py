@@ -17,7 +17,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.vel = 10
+        self.vel = 15
         self.image.set_colorkey('yellow')
         self.facing = facing
         boltAnim = []
@@ -29,5 +29,5 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         self.boltAnimFB.blit(self.image, (0, 0))
         self.rect.x += self.vel * self.facing
-        if self.rect.right < 0 or self.rect.left > 1504:
+        if self.rect.right < 0 or self.rect.left > 2000:
             self.kill()

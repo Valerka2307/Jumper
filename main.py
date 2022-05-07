@@ -9,11 +9,13 @@ WIDTH = 900
 HEIGHT = 640
 DISPLAY = (WIDTH, HEIGHT)
 BACKGROUND_COLOR = "purple"
-PWIDTH = 32
+PWIDTH = 40
 PHEIGHT = 32
 PCOLOR = "dark orange"
 
 timer = pygame.time.Clock()
+
+block = pygame.sprite.Group()
 
 def camera_configure(camera, target_rect):
     l, t, _, _ = target_rect
@@ -42,35 +44,35 @@ def main():
     entities.add(hero)
 
     level = [
-       "-----------------------------------------------",
-       "-                                             -",
-       "-                       --                    -",
-       "-                                             -",
-       "-            --                 -----         -",
-       "-                                             -",
-       "--                                            -",
-       "-                                             -",
-       "-                   ----     ---              -",
-       "-                                             -",
-       "-                                             -",
-       "--                                    ----    -",
-       "-                                             -",
-       "-                                             -",
-       "-                                             -", 
-       "-                            ---              -",
-       "-                                             -",
-       "-                                             -",
-       "-      ---                       --- --       -",
-       "-                                             -",
-       "-                                             -",
-       "-   -------         ----                      -",
-       "-                                             -",
-       "-                         -                   -",
-       "-                                             -",
-       "-                            --               -",
-       "-                                             -",
-       "-                                             -",
-       "-----------------------------------------------"]
+       "--------------------------------------------------",
+       "-                                                -",
+       "-                       --                       -",
+       "-                                                -",
+       "-            --                    -----         -",
+       "-                                                -",
+       "--                                               -",
+       "-                                                -",
+       "-                   ----     ---                 -",
+       "-                                                -",
+       "-                                                -",
+       "--                                     ----      -",
+       "-                                                -",
+       "-                                                -",
+       "-                                                -",
+       "-                            ---                 -",
+       "-                                                -",
+       "-                                                -",
+       "-      ---                       --- --          -",
+       "-                                                -",
+       "-                                                -",
+       "-   -------         ----                         -",
+       "-                                                -",
+       "-                          -                     -",
+       "-                                                -",
+       "-                               --               -",
+       "-                                                -",
+       "-                                                -",
+       "--------------------------------------------------"]
     up = False
     
     x = y = 0
@@ -80,7 +82,6 @@ def main():
                 pf = Platform(x,y)
                 entities.add(pf)
                 platforms.append(pf)
-
             x += PWIDTH
         y += PHEIGHT
         x = 0
@@ -103,10 +104,9 @@ def main():
 
             if e.type == KEYUP and e.key == K_RIGHT:
                 right = False
-                lastMove = "right"
+
             if e.type == KEYUP and e.key == K_LEFT:
                 left = False
-                lastMove = "left"
             
             if e.type == KEYDOWN and e.key == K_UP:
                 up = True
@@ -117,10 +117,8 @@ def main():
             if e.type == KEYUP and e.key == K_SPACE:
                 if lastMove == "right":
                     hero.shoot(1)
-                    anim_shoot()
                 else:
                     hero.shoot(-1)
-                    anim_shoot()
 
             if e.type == QUIT:
                 exit()
