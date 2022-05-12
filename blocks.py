@@ -5,6 +5,7 @@ PWIDTH = 40
 PHEIGHT = 32
 PCOLOR = "dark orange"
 
+
 class Platform(sprite.Sprite):
     def __init__(self, x, y):
         sprite.Sprite.__init__(self)

@@ -1,7 +1,7 @@
 import pygame
 import pyganim
 
-ANIMATION_DEL = 60 # скорость смены кадров
+ANIMATION_DEL = 120 # скорость смены кадров
 ANIMATION_FIREBALL = [('character/fb0.png'),
             ('character/fb1.png'),
             ('character/fb2.png'),
