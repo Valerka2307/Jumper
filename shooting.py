@@ -16,7 +16,7 @@ class Bullet(pygame.sprite.Sprite):
         self.image.fill('yellow')
         self.rect = self.image.get_rect()
         self.rect.x = x
-        self.rect.y = y
+        self.rect.y = y - 5
         self.vel = 15
         self.image.set_colorkey('yellow')
         self.facing = facing

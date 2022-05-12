@@ -46,14 +46,34 @@ def main():
     platforms = []  # то, во что мы будем врезаться или опираться
     entities.add(hero)
     mobs = pygame.sprite.Group()
-    for i in range(6):
+
+    font_name = pygame.font.match_font('arial')
+
+    def draw_text(surf, text, size, x, y):
+        font = pygame.font.Font(font_name, size)
+        text_surface = font.render(text, True, "dark orange")
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        surf.blit(text_surface, text_rect)
+    n = 2
+    k = 1
+    for i in range(n):
         m1 = MobLeft()
         all_sprites.add(m1)
         mobs.add(m1)
-    for i in range(6):
+
+    for i in range(n):
         m2 = MobRight()
         all_sprites.add(m2)
         mobs.add(m2)
+
+    score = 0
+    score1 = 0
+    if score - score1 == 30 * k:
+        k += 1
+        n += 1
+        m += 1
+        score1 == score
 
     level = [
         "--------------------------------------------------",
@@ -103,6 +123,10 @@ def main():
     total_level_height = len(level) * PHEIGHT  # высоту
 
     camera = Camera(camera_configure, total_level_width, total_level_height)
+    mixer.init()
+    mixer.music.load('sounds/phoneMusic.mp3')
+    mixer.music.set_volume(1.1)
+    mixer.music.play(loops=-1)
     running = True
 
     while running:
@@ -136,20 +160,28 @@ def main():
             if e.type == QUIT:
                 exit()
 
+        mixer.init()
+        exp_sound = mixer.Sound('sounds/explosion.wav')
         # Обновление
         all_sprites.update()
 
         hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
+
         for hit in hits:
+            score += 30
+            exp_sound.play()
             m1 = MobLeft()
             all_sprites.add(m1)
             mobs.add(m1)
+
         for hit in hits:
-            m2 = MobLeft()
+            score += 30
+            exp_sound.play()
+            m2 = MobRight()
             all_sprites.add(m2)
             mobs.add(m2)
 
-        hits = pygame.sprite.spritecollide(hero, mobs, False)
+        hits = pygame.sprite.spritecollide(hero, mobs, False, pygame.sprite.collide_circle_ratio(0.9))
         if hits:
             running = False
         screen.blit(bg, (0, 0))
@@ -163,6 +195,8 @@ def main():
         for e in all_sprites:
             e.update()
             screen.blit(e.image, camera.apply(e))
+
+        draw_text(screen, str(score), 30, WIDTH - 40, 10)
         pygame.display.update()
 
 

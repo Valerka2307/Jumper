@@ -3,6 +3,11 @@ import pyganim
 from shooting import *
 import time
 
+mixer.init()
+
+shoot_sound = mixer.Sound('sounds/laserShoot.wav')
+jump_sound = mixer.Sound('sounds/jump.wav')
+
 JUMP_POWER = 10
 GRAVITY = 0.4  # Сила, которая будет тянуть нас вниз
 MOVE_SPEED = 12
@@ -85,6 +90,7 @@ class Player(sprite.Sprite):
                 self.lastJump = time.time()
             self.image.fill(Color(COLOR))
             self.boltAnimJump.blit(self.image, (0, 0))
+            jump_sound.play()
 
         if left:
             self.xvel = -MOVE_SPEED  # Лево = x- n
@@ -146,3 +152,4 @@ class Player(sprite.Sprite):
         bullet = Bullet(self.rect.centerx, self.rect.centery, self.facing)
         all_sprites.add(bullet)
         bullets.add(bullet)
+        shoot_sound.play()
