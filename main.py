@@ -5,9 +5,13 @@ from blocks import *
 from camera import *
 from shooting import *
 from mob import *
+from button import *
 
 
-WIDTH = 900
+pygame.init()
+
+
+WIDTH = 896
 HEIGHT = 640
 DISPLAY = (WIDTH, HEIGHT)
 BACKGROUND_COLOR = "purple"
@@ -15,10 +19,16 @@ PWIDTH = 40
 PHEIGHT = 32
 PCOLOR = "dark orange"
 
+screen = pygame.display.set_mode(DISPLAY)
+pygame.display.set_caption("Platform")
+bg = pygame.image.load("background/moun.jpg")
+
+start_img = pygame.image.load('button/start_btn.png').convert_alpha()
+exit_img = pygame.image.load('button/exit_btn.png').convert_alpha()
 timer = pygame.time.Clock()
-
+BG = (144, 201, 120)
 block = pygame.sprite.Group()
-
+start_game = False
 
 def camera_configure(camera, target_rect):
     l, t, _, _ = target_rect
@@ -35,11 +45,8 @@ def camera_configure(camera, target_rect):
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode(DISPLAY)
-    pygame.display.set_caption("Platform")
-    bg = pygame.image.load("background/moun.jpg")
 
-    hero = Player(900, 500)   # создаем героя по (x,y) координатам
+    hero = Player(800, 500)   # создаем героя по (x,y) координатам
     left = right = False  # по умолчанию — стоим
 
     entities = pygame.sprite.Group()  # Все объекты
@@ -75,6 +82,8 @@ def main():
         m += 1
         score1 == score
 
+    start_button = Button(WIDTH // 2 - 130, HEIGHT // 2 - 150, start_img, 1)
+    exit_button = Button(WIDTH // 2 - 110, HEIGHT // 2 + 50, exit_img, 1)
     level = [
         "--------------------------------------------------",
         "-                                                -",
@@ -128,9 +137,57 @@ def main():
     mixer.music.set_volume(1.1)
     mixer.music.play(loops=-1)
     running = True
+    start_game = False
 
     while running:
         timer.tick(60)
+
+        if start_game == False:
+            screen.blit(bg, (0, 0))
+
+            if start_button.draw(screen):
+                start_game = True
+            if exit_button.draw(screen):
+                running = False
+        else:
+            mixer.init()
+            exp_sound = mixer.Sound('sounds/explosion.wav')
+            # Обновление
+            all_sprites.update()
+
+            hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
+
+            for hit in hits:
+                score += 30
+                exp_sound.play()
+                m1 = MobLeft()
+                all_sprites.add(m1)
+                mobs.add(m1)
+
+            for hit in hits:
+                score += 30
+                exp_sound.play()
+                m2 = MobRight()
+                all_sprites.add(m2)
+                mobs.add(m2)
+
+            hits = pygame.sprite.spritecollide(hero, mobs, False, pygame.sprite.collide_circle_ratio(0.9))
+            if hits:
+                running = False
+            screen.blit(bg, (0, 0))
+
+            hero.update(left, right, up, platforms)  # передвижение
+
+            camera.update(hero)  # центризируем камеру относительно персонажа
+            draw_text(screen, str(score), 30, WIDTH - 40, 10)
+
+            for e in entities:
+                screen.blit(e.image, camera.apply(e))
+
+            for e in all_sprites:
+                e.update()
+                screen.blit(e.image, camera.apply(e))
+
         for e in pygame.event.get():
             if e.type == KEYDOWN and e.key == K_LEFT:
                 left = True
@@ -160,43 +217,6 @@ def main():
             if e.type == QUIT:
                 exit()
 
-        mixer.init()
-        exp_sound = mixer.Sound('sounds/explosion.wav')
-        # Обновление
-        all_sprites.update()
-
-        hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
-
-        for hit in hits:
-            score += 30
-            exp_sound.play()
-            m1 = MobLeft()
-            all_sprites.add(m1)
-            mobs.add(m1)
-
-        for hit in hits:
-            score += 30
-            exp_sound.play()
-            m2 = MobRight()
-            all_sprites.add(m2)
-            mobs.add(m2)
-
-        hits = pygame.sprite.spritecollide(hero, mobs, False, pygame.sprite.collide_circle_ratio(0.9))
-        if hits:
-            running = False
-        screen.blit(bg, (0, 0))
-
-        hero.update(left, right, up, platforms)  # передвижение
-
-        camera.update(hero)  # центризируем камеру относительно персонажа
-        for e in entities:
-            screen.blit(e.image, camera.apply(e))
-
-        for e in all_sprites:
-            e.update()
-            screen.blit(e.image, camera.apply(e))
-
-        draw_text(screen, str(score), 30, WIDTH - 40, 10)
         pygame.display.update()
 
 

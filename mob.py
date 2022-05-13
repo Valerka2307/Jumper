@@ -10,6 +10,7 @@ ANIMATION_MOB = [('mob/mob0.png'),
             ('mob/mob4.png'),
             ('mob/mob5.png')]
 
+
 class MobLeft(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -19,7 +20,7 @@ class MobLeft(pygame.sprite.Sprite):
         self.image.set_colorkey('red')
         self.rect.x = -40
         self.rect.y = randrange(0, 896)
-        self.speedx = randrange(1, 4)
+        self.speedx = randrange(2, 5)
         self.speedy = randrange(-2, 2)
         boltAnim = []
         for anim in ANIMATION_MOB:
@@ -34,7 +35,7 @@ class MobLeft(pygame.sprite.Sprite):
         if self.rect.left > 2000:
             self.rect.x = -40
             self.rect.y = randrange(0, 896)
-            self.speedx = randrange(1, 4)
+            self.speedx = randrange(2, 5)
             self.speedy = randrange(-2, 2)
 
 
@@ -47,7 +48,7 @@ class MobRight(pygame.sprite.Sprite):
         self.image.set_colorkey('red')
         self.rect.x = 2040
         self.rect.y = randrange(0, 896)
-        self.speedx = randrange(1, 4)
+        self.speedx = randrange(2, 5)
         self.speedy = randrange(-2, 2)
         boltAnim = []
         for anim in ANIMATION_MOB:
@@ -59,8 +60,8 @@ class MobRight(pygame.sprite.Sprite):
         self.boltAnimMOB.blit(self.image, (0, 0))
         self.rect.x -= self.speedx
         self.rect.y += self.speedy
-        if self.rect.right < 0 :
+        if self.rect.right < 0:
             self.rect.x = 2040
             self.rect.y = randrange(0, 896)
-            self.speedx = randrange(1, 4)
+            self.speedx = randrange(2, 5)
             self.speedy = randrange(-2, 2)
