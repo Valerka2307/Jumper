@@ -22,6 +22,7 @@ PCOLOR = "dark orange"
 screen = pygame.display.set_mode(DISPLAY)
 pygame.display.set_caption("Platform")
 bg = pygame.image.load("background/moun.jpg")
+back = pygame.image.load("background/back.png")
 
 start_img = pygame.image.load('button/start_btn.png').convert_alpha()
 exit_img = pygame.image.load('button/exit_btn.png').convert_alpha()
@@ -53,6 +54,7 @@ def main():
     platforms = []  # то, во что мы будем врезаться или опираться
     entities.add(hero)
     mobs = pygame.sprite.Group()
+    #meteors = pygame.sprite.Group()
 
     font_name = pygame.font.match_font('arial')
 
@@ -74,12 +76,13 @@ def main():
         all_sprites.add(m2)
         mobs.add(m2)
 
+
     score = 0
     score1 = 0
+    #score2 = 0
     if score - score1 == 30 * k:
         k += 1
         n += 1
-        m += 1
         score1 == score
 
     start_button = Button(WIDTH // 2 - 130, HEIGHT // 2 - 150, start_img, 1)
@@ -138,7 +141,17 @@ def main():
     mixer.music.play(loops=-1)
     running = True
     start_game = False
+    score2 = 0
 
+    #def met():
+    #    for i in range(8):
+    #        m = Mob()
+    #        all_sprites.add(m)
+    #        meteors.add(m)
+    #        score2 = score
+
+    #if (score - score2) // 300:
+    #    met()
     while running:
         timer.tick(60)
 
@@ -173,7 +186,31 @@ def main():
 
             hits = pygame.sprite.spritecollide(hero, mobs, False, pygame.sprite.collide_circle_ratio(0.9))
             if hits:
-                running = False
+                running = True
+                screen.blit(back, (0, 0))
+                draw_text(screen, f"YOU DIED!", 90, 300, 50)
+                draw_text(screen, f"SCORE : {str(score)}", 40, 400, 200)
+                pygame.display.update()
+                pygame.time.delay(5000)
+                mobs.empty()
+                entities.empty()
+                all_sprites.empty()
+                bullets.empty()
+                score = 0
+                start_game = False
+                hero = Player(800, 500)
+                entities.add(hero)
+                entities.add(platforms)
+                for i in range(n):
+                    m1 = MobLeft()
+                    all_sprites.add(m1)
+                    mobs.add(m1)
+
+                for i in range(n):
+                    m2 = MobRight()
+                    all_sprites.add(m2)
+                    mobs.add(m2)
+
             screen.blit(bg, (0, 0))
 
             hero.update(left, right, up, platforms)  # передвижение
