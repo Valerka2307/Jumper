@@ -1,4 +1,4 @@
-from src.play import main
+from src.play import Game
 
 if __name__ == "__main__":
-    main()
+    Game.main()
