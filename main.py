@@ -164,7 +164,3 @@ def main():
             e.update()
             screen.blit(e.image, camera.apply(e))
         pygame.display.update()
-
-
-if __name__ == "__main__":
-    main()
