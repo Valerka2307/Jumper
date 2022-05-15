@@ -1,6 +1,6 @@
 from pygame import *
 import pyganim
-from shooting import *
+from src.shooting import *
 import time
 
 mixer.init()

@@ -1,11 +1,11 @@
 import pygame
 from pygame import *
-from character import *
-from blocks import *
-from camera import *
-from shooting import *
-from mob import *
-from button import *
+from src.character import *
+from src.blocks import *
+from src.camera import *
+from src.shooting import *
+from src.mob import *
+from src.button import *
 
 
 pygame.init()
