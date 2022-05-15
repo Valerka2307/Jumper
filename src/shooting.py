@@ -22,14 +22,14 @@ class Bullet(pygame.sprite.Sprite):
         self.image.set_colorkey('yellow')
         self.facing = facing
 
-        bolt_Anim = []
+        bolt_anim = []
         for anim in ANIMATION_FIREBALL:
-            bolt_Anim.append((anim, ANIMATION_DEL))
-        self.bolt_Anim_FB = pyganim.PygAnimation(bolt_Anim)
-        self.bolt_Anim_FB.play()
+            bolt_anim.append((anim, ANIMATION_DEL))
+        self.bolt_anim_FB = pyganim.PygAnimation(bolt_anim)
+        self.bolt_anim_FB.play()
 
     def update(self):
-        self.bolt_Anim_FB.blit(self.image, (0, 0))
+        self.bolt_anim_FB.blit(self.image, (0, 0))
         self.rect.x += self.vel * self.facing
         if self.rect.right < 0 or self.rect.left > 2000:
             self.kill()
