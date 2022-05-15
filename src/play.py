@@ -3,31 +3,9 @@ from pygame import *
 from src.character import *
 from src.blocks import *
 from src.camera import *
-from src.shooting import *
 from src.mob import *
 from src.button import *
-
-pygame.init()
-
-WIDTH = 896
-HEIGHT = 640
-DISPLAY = (WIDTH, HEIGHT)
-BACKGROUND_COLOR = "purple"
-PWIDTH = 40
-PHEIGHT = 32
-PCOLOR = "dark orange"
-
-screen = pygame.display.set_mode(DISPLAY)
-pygame.display.set_caption("Platform")
-bg = pygame.image.load("background/moun.jpg")
-back = pygame.image.load("background/back.png")
-
-start_img = pygame.image.load('button/start_btn.png').convert_alpha()
-exit_img = pygame.image.load('button/exit_btn.png').convert_alpha()
-timer = pygame.time.Clock()
-BG = (144, 201, 120)
-block = pygame.sprite.Group()
-start_game = False
+from src.Globals import *
 
 
 class Game:
@@ -142,17 +120,7 @@ class Game:
         mixer.music.play(loops=-1)
         running = True
         start_game = False
-        score2 = 0
 
-        # def met():
-        #    for i in range(8):
-        #        m = Mob()
-        #        all_sprites.add(m)
-        #        meteors.add(m)
-        #        score2 = score
-
-        # if (score - score2) // 300:
-        #    met()
         while running:
             timer.tick(60)
 

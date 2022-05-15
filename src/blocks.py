@@ -1,9 +1,9 @@
-from pygame import *
-
-
-PWIDTH = 40
-PHEIGHT = 32
-PCOLOR = "dark orange"
+import pygame
+from pygame import sprite
+from pygame import Surface
+from pygame import image
+from pygame import Rect
+from src.Globals import *
 
 class Platform(sprite.Sprite):
     def __init__(self, x, y):

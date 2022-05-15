@@ -2,39 +2,7 @@ from pygame import *
 import pyganim
 from src.shooting import *
 import time
-
-mixer.init()
-
-shoot_sound = mixer.Sound('sounds/laserShoot.wav')
-jump_sound = mixer.Sound('sounds/jump.wav')
-
-JUMP_POWER = 10
-GRAVITY = 0.4  # Сила, которая будет тянуть нас вниз
-MOVE_SPEED = 12
-WIDTH = 32
-HEIGHT = 32
-COLOR = "red"
-
-all_sprites = pygame.sprite.Group()
-bullets = pygame.sprite.Group()
-
-ANIMATION_DELAY = 100  # скорость смены кадров
-ANIMATION_RIGHT = [('character/r0.png'),
-                   ('character/r1.png'),
-                   ('character/r2.png')]
-ANIMATION_LEFT = [('character/l0.png'),
-                  ('character/l1.png'),
-                  ('character/l2.png')]
-
-ANIMATION_JUMP_LEFT = [('character/jl.png', 1)]
-ANIMATION_JUMP_RIGHT = [('character/jr.png', 1)]
-ANIMATION_JUMP = [('character/j.png', 1)]
-ANIMATION_STAY = [('character/s0.png'),
-                  ('character/s1.png'),
-                  ('character/s2.png'),
-                  ('character/s3.png'),
-                  ('character/s4.png'),
-                  ('character/s5.png')]
+from src.Globals import *
 
 
 class Player(sprite.Sprite):
@@ -43,9 +11,9 @@ class Player(sprite.Sprite):
         self.xvel = 0  # скорость перемещения. 0 - стоять на месте
         self.startX = x  # Начальная позиция Х, пригодится когда будем переигрывать уровень
         self.startY = y
-        self.image = Surface((WIDTH, HEIGHT))
+        self.image = Surface((CWIDTH, CHEIGHT))
         self.image.fill(Color(COLOR))
-        self.rect = Rect(x, y, WIDTH, HEIGHT)  # прямоугольный объект
+        self.rect = Rect(x, y, CWIDTH, CHEIGHT)  # прямоугольный объект
         self.yvel = 0  # скорость вертикального перемещения
         self.onGround = False  # На земле ли я?
         self.counter = 0
