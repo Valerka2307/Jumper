@@ -5,6 +5,7 @@ from pygame import image
 from pygame import Rect
 from src.Globals import *
 
+
 class Platform(sprite.Sprite):
     def __init__(self, x, y):
         sprite.Sprite.__init__(self)

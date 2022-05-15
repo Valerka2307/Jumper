@@ -22,14 +22,14 @@ class MobLeft(pygame.sprite.Sprite):
         self.rect.y = randrange(0, 896)
         self.speedx = randrange(2, 5)
         self.speedy = randrange(-2, 2)
-        boltAnim = []
+        bolt_anim = []
         for anim in ANIMATION_MOB:
-            boltAnim.append((anim, ANIMATION_DEL))
-        self.boltAnimMOB = pyganim.PygAnimation(boltAnim)
-        self.boltAnimMOB.play()
+            bolt_anim.append((anim, ANIMATION_DEL))
+        self.bolt_anim_mob = pyganim.PygAnimation(bolt_anim)
+        self.bolt_anim_mob.play()
 
     def update(self):
-        self.boltAnimMOB.blit(self.image, (0, 0))
+        self.bolt_anim_mob.blit(self.image, (0, 0))
         self.rect.x += self.speedx
         self.rect.y += self.speedy
         if self.rect.left > 2000:
@@ -50,14 +50,14 @@ class MobRight(pygame.sprite.Sprite):
         self.rect.y = randrange(0, 896)
         self.speedx = randrange(2, 5)
         self.speedy = randrange(-2, 2)
-        boltAnim = []
+        bolt_anim = []
         for anim in ANIMATION_MOB:
-            boltAnim.append((anim, ANIMATION_DEL))
-        self.boltAnimMOB = pyganim.PygAnimation(boltAnim)
-        self.boltAnimMOB.play()
+            bolt_anim.append((anim, ANIMATION_DEL))
+        self.bolt_anim_mob = pyganim.PygAnimation(bolt_anim)
+        self.bolt_anim_mob.play()
 
     def update(self):
-        self.boltAnimMOB.blit(self.image, (0, 0))
+        self.bolt_anim_mob.blit(self.image, (0, 0))
         self.rect.x -= self.speedx
         self.rect.y += self.speedy
         if self.rect.right < 0:
