@@ -65,21 +65,3 @@ class MobRight(pygame.sprite.Sprite):
             self.rect.y = randrange(0, 896)
             self.speedx = randrange(2, 5)
             self.speedy = randrange(-2, 2)
-
-
-#class Mob(pygame.sprite.Sprite):
-#    def __init__(self):
-#       pygame.sprite.Sprite.__init__(self)
-#        self.image = pygame.Surface((40, 40))
-#        self.image.fill('red')
-#        self.rect = self.image.get_rect()
-#        self.rect.x = randrange(2000 - self.rect.width)
-#        self.rect.y = randrange(-100, -40)
-#        self.speedy = randrange(1, 8)
-#        self.speedx = randrange(-3, 3)
-
-#    def update(self):
-#        self.rect.x += self.speedx
-#        self.rect.y += self.speedy
-#        if self.rect.top > 896 + 10 or self.rect.left < -25 or self.rect.right > 2000 + 20:
-#            self.kill()
